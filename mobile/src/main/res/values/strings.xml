@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LimitIndicator</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="animation_type_normal">Simple Animation</string>
+    <string name="animation_type_increase_width">Increase Border Animation</string>
+    <!--<string name="animation_type_increase_width">Increase Border Animation</string>-->
+
+</resources>
