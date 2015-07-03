@@ -88,6 +88,9 @@ public class LimitIndicator extends ViewGroup {
     // This should be the one which provides us a percentage wise drawing
     private int mSweepAngle = 1;
 
+    // Add up to counter
+    private int mCounter = 0;
+
     private RectF mBorderBounds = null;
 
     public enum ANIMATION_TYPE {
@@ -179,16 +182,27 @@ public class LimitIndicator extends ViewGroup {
 
         pCanvas.drawCircle(mCenterX, mCenterY, mOuterCircleRadius, mDialPaint);
         pCanvas.drawCircle(mCenterX, mCenterY, mOuterCircleRadius - mBorderWidth + 1, mInnerCirclePaint);
-        pCanvas.drawText(mTitleText, mCenterX, mCenterY + 5, mTextPaint);
+        pCanvas.drawText(mTitleText, mCenterX + 15, mCenterY + 15, mTextPaint);
 
         pCanvas.drawArc(mBorderBounds, mStartAngle, mSweepAngle, false, mBorderPaint);
 
         if (mSweepAngle < mTotalProgressInDegrees) {
-            mSweepAngle+=3;
+            mSweepAngle += 3;
             if (animation_type.equals(ANIMATION_TYPE.INCREASE_WIDTH)) {
+                mCounter++;
+                if (mCounter <= mTotalProgress) {
+                    mTitleText = mCounter + " %";
+                    pCanvas.drawText(mTitleText, mCenterX + 15, mCenterY + 15, mTextPaint);
+                }
                 mBorderPaint.setStrokeWidth(mBorderWidth++);
             } else {
+                if (mCounter <= mTotalProgress) {
+                    mCounter++;
+                    pCanvas.drawText(mTitleText, mCenterX + 15, mCenterY + 15, mTextPaint);
+                }
                 mBorderPaint.setStrokeWidth(mBorderWidth);
+
+                mTitleText = mCounter + " %";
             }
             invalidate();
         }
@@ -216,7 +230,7 @@ public class LimitIndicator extends ViewGroup {
         mCenterY    = (float) ((pH - yPad) * 0.5);
 
 
-        //  This (mBorderBounds.bottom needs to be fixed. Width &
+        // This (mBorderBounds.bottom needs to be fixed. Width &
         // Height should be equal in order
         // to create a perfect circle. Otherwise an
         // Oval will be created! :P

@@ -14,14 +14,30 @@
         android:layout_height="300dp"
         android:layout_centerInParent="true"
         android:id="@+id/limitIndicator"
-        custom:borderColor="#800080"
+        custom:borderColor="#2C3539"
         custom:borderRadius="5dp"
         custom:outerCircleRadius="105dp"
         custom:text="Test Test"
-        custom:textColor="#0e0e0e"
-        custom:textSize="12sp"
+        custom:textColor="#ffffff"
+        custom:textSize="16sp"
         custom:numerator="75"
-        custom:innerCircleColor="#008000"
+        custom:innerCircleColor="#000000"
         android:background="@color/hint_foreground_material_dark"/>
+
+    <!--<src.limitindicator.com.limitindicatorlibrary.LimitIndicator-->
+        <!--android:layout_width="300dp"-->
+        <!--android:layout_height="300dp"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:id="@+id/limitIndicator"-->
+        <!--custom:borderColor="#800080"-->
+        <!--custom:borderRadius="5dp"-->
+        <!--custom:outerCircleRadius="105dp"-->
+        <!--custom:text="Test Test"-->
+        <!--custom:textColor="#0e0e0e"-->
+        <!--custom:textSize="16sp"-->
+        <!--custom:numerator="75"-->
+        <!--custom:innerCircleColor="#008000"-->
+        <!--android:background="@color/hint_foreground_material_dark"/>-->
+
 
 </RelativeLayout>
