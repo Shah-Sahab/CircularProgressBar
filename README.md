@@ -1,4 +1,4 @@
-# LimitIndicator
+# Circular Progress Bar / LimitIndicator
 
 The MIT License (MIT)
 
