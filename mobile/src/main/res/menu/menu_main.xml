@@ -19,4 +19,21 @@
           android:orderInCategory="100"
           app:showAsAction="never"/>
 
+    <item android:id="@+id/animation_type_round_corner"
+          android:title="@string/animation_type_round_corners"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/animation_type_butt_corner"
+          android:title="@string/animation_type_butt_corners"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/animation_type_square_corner"
+          android:title="@string/animation_type_square_corners"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+
+
+
 </menu>

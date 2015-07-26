@@ -5,6 +5,9 @@
     <string name="action_settings">Settings</string>
     <string name="animation_type_normal">Simple Animation</string>
     <string name="animation_type_increase_width">Increase Border Animation</string>
+    <string name="animation_type_round_corners">Round Corners</string>
+    <string name="animation_type_butt_corners">Butt Corners</string>
+    <string name="animation_type_square_corners">Square Corners</string>
     <!--<string name="animation_type_increase_width">Increase Border Animation</string>-->
 
 </resources>

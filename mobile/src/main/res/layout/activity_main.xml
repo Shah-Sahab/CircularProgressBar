@@ -14,14 +14,14 @@
         android:layout_height="300dp"
         android:layout_centerInParent="true"
         android:id="@+id/limitIndicator"
-        custom:borderColor="#2C3539"
-        custom:borderRadius="5dp"
+        custom:borderColor="#FF9900"
+        custom:borderRadius="15dp"
         custom:outerCircleRadius="105dp"
         custom:text="Test Test"
-        custom:textColor="#ffffff"
+        custom:textColor="#000000"
         custom:textSize="16sp"
         custom:numerator="75"
-        custom:innerCircleColor="#000000"
+        custom:innerCircleColor="#efefef"
         android:background="@color/hint_foreground_material_dark"/>
 
     <!--<src.limitindicator.com.limitindicatorlibrary.LimitIndicator-->

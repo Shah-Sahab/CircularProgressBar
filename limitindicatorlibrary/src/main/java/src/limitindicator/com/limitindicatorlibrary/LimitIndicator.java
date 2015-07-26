@@ -29,6 +29,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.PorterDuff;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -64,6 +65,8 @@ public class LimitIndicator extends ViewGroup {
     // ----------------------------------------------------------------------------------------------------------
     // Variables Declaration
 
+    public static String TAG = "LimitIndicator";
+
     private int     mInnerCircleColor;
     private int     mBorderColor;
     private int     mTextColor;
@@ -73,6 +76,7 @@ public class LimitIndicator extends ViewGroup {
     private float mHalfOfBorderWidth    = 0.0f;
     private float mOuterCircleRadius    = 2.0f;
     private float mBorderWidth          = 30.0f;
+    private float mBorderWidthCopyValue = 30.0f;
 
     private Paint mDialPaint, mTextPaint, mBorderPaint, mInnerCirclePaint;
 
@@ -86,7 +90,7 @@ public class LimitIndicator extends ViewGroup {
     private int mStartAngle = 270;
 
     // This should be the one which provides us a percentage wise drawing
-    private int mSweepAngle = 1;
+    private int mSweepAngle = 0;
 
     // Add up to counter
     private int mCounter = 0;
@@ -99,18 +103,23 @@ public class LimitIndicator extends ViewGroup {
 
     private ANIMATION_TYPE animation_type;
 
+    // To reset the progress
+    public boolean mReset;
+
+
+
     // ----------------------------------------------------------------------------------------------------------
     // Constructors
 
     public LimitIndicator(Context pContext) {
         super(pContext);
-        Log.d("LimitIndicator", "LimitIndicator(Context pContext) called");
+        Log.d(TAG, "LimitIndicator(Context pContext) called");
         initialize();
     }
 
     public LimitIndicator(Context pContext, AttributeSet pAttrs) {
         super(pContext, pAttrs);
-        Log.d("LimitIndicator", "LimitIndicator(Context pContext, AttributeSet pAttrs) called");
+        Log.d(TAG, "LimitIndicator(Context pContext, AttributeSet pAttrs) called");
         TypedArray typedArray = pContext.obtainStyledAttributes(pAttrs, R.styleable.LimitIndicator, 0, 0);
 
         try {
@@ -122,6 +131,9 @@ public class LimitIndicator extends ViewGroup {
             mTextColor          = typedArray.getColor(R.styleable.LimitIndicator_textColor, Color.WHITE);
             mTitleText          = typedArray.getString(R.styleable.LimitIndicator_text);
             mTextSize           = typedArray.getDimension(R.styleable.LimitIndicator_textSize, 25);
+
+            mBorderWidthCopyValue = mBorderWidth;
+
         } finally {
             typedArray.recycle();
         }
@@ -177,6 +189,13 @@ public class LimitIndicator extends ViewGroup {
         super.onDraw(pCanvas);
         Log.d("LimitIndicator", "OnDraw called");
 
+        if (mReset) {
+            // Clear the canvas & reset the flag
+            reset(pCanvas);
+            mReset = false;
+
+        }
+
         Log.d("Measured Spec Width", mCenterX + "");
         Log.d("Measured Spec Height", mCenterY + "");
 
@@ -187,26 +206,28 @@ public class LimitIndicator extends ViewGroup {
         pCanvas.drawArc(mBorderBounds, mStartAngle, mSweepAngle, false, mBorderPaint);
 
         if (mSweepAngle < mTotalProgressInDegrees) {
+            // To move the progress
             mSweepAngle += 3;
             if (animation_type.equals(ANIMATION_TYPE.INCREASE_WIDTH)) {
-                mCounter++;
-                if (mCounter <= mTotalProgress) {
-                    mTitleText = mCounter + " %";
-                    pCanvas.drawText(mTitleText, mCenterX + 15, mCenterY + 15, mTextPaint);
-                }
+                drawText(pCanvas);
+                // To increase the width at runtime.
                 mBorderPaint.setStrokeWidth(mBorderWidth++);
             } else {
-                if (mCounter <= mTotalProgress) {
-                    mCounter++;
-                    pCanvas.drawText(mTitleText, mCenterX + 15, mCenterY + 15, mTextPaint);
-                }
+                drawText(pCanvas);
                 mBorderPaint.setStrokeWidth(mBorderWidth);
-
-                mTitleText = mCounter + " %";
             }
             invalidate();
         }
 
+    }
+
+    private void drawText(Canvas pCanvas) {
+
+        mCounter++;
+        if (mCounter <= mTotalProgress) {
+            mTitleText = mCounter + " %";
+            pCanvas.drawText(mTitleText, mCenterX + 15, mCenterY + 15, mTextPaint);
+        }
     }
 
     @Override
@@ -257,15 +278,60 @@ public class LimitIndicator extends ViewGroup {
         }
     }
 
-
     /**
      * To restart the animation
      */
-    public void restartProgress() {
-//        initialize();
-        mTotalProgress = 0;
-        refreshDrawableState();
+    private void reset(Canvas pCanvas) {
+
+        resetProgress();
+        resetAndNullOutPaint();
+        clearCanvas(pCanvas);
+
+        ANIMATION_TYPE animationType = animation_type;
+        initialize();
+        animation_type = animationType;
+
+        // This changes the layout position as a child, which shouldn't happen.
+//        layout(0, 0, getRight(), getBottom());
+
+        // Reset the x, y coordinated of the current objects
+        onSizeChanged(getWidth(), getHeight(), 0, 0);
+//        refreshDrawableState();
         invalidate();
+
+        // TODO : Need to work more on this.
+    }
+
+    private void clearCanvas(Canvas pCanvas) {
+        // Clear the canvas completely
+        pCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+        Log.e(TAG, "Clear");
+    }
+
+    /**
+     * Reset all the values to their original values
+     */
+    private void resetProgress() {
+        mTotalProgress  = 0;
+        mSweepAngle     = 0;
+        mCounter        = 0;
+        mBorderWidth    = mBorderWidthCopyValue;
+    }
+
+    /**
+     * Reset the paint and set it to null.
+     */
+    private void resetAndNullOutPaint() {
+        mTextPaint.reset();
+        mBorderPaint.reset();
+        mInnerCirclePaint.reset();
+        mDialPaint.reset();
+
+        // Null out all the paint objects
+        mInnerCirclePaint   = null;
+        mBorderPaint        = null;
+        mDialPaint          = null;
+        mTextPaint          = null;
     }
 
     /**

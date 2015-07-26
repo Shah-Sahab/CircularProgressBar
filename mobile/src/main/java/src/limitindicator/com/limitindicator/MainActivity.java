@@ -1,7 +1,9 @@
 package src.limitindicator.com.limitindicator;
 
+import android.graphics.Paint;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -40,15 +42,49 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.animation_type_normal) {
-            mLimitIndicator.clearAnimation();
+//            mLimitIndicator.reset();
+            mLimitIndicator.mReset = true;
             mLimitIndicator.setAnimationType(LimitIndicator.ANIMATION_TYPE.NORMAL);
-            mLimitIndicator.restartProgress();
+            float radiusInDps = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, getResources().getDisplayMetrics());
+//            mLimitIndicator.setOuterCircleRadius(radiusInDps);
+            mLimitIndicator.startProgress();
         } else if (id == R.id.animation_type_increase_width) {
-            mLimitIndicator.clearAnimation();
+//            mLimitIndicator.reset();
+            mLimitIndicator.mReset = true;
             mLimitIndicator.setAnimationType(LimitIndicator.ANIMATION_TYPE.INCREASE_WIDTH);
-            mLimitIndicator.restartProgress();
+            mLimitIndicator.startProgress();
+
+        } else if (id == R.id.animation_type_butt_corner) {
+
+            // TODO:
+            mLimitIndicator.setIndicatorCap(Paint.Cap.BUTT);
+            mLimitIndicator.invalidate();
+
+        } else if (id == R.id.animation_type_round_corner) {
+
+            // TODO:
+            mLimitIndicator.setIndicatorCap(Paint.Cap.ROUND);
+            mLimitIndicator.invalidate();
+
+        } else if (id == R.id.animation_type_square_corner) {
+
+            // TODO:
+            mLimitIndicator.setIndicatorCap(Paint.Cap.SQUARE);
+            mLimitIndicator.invalidate();
+
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * custom:borderColor="#e3e"
+     custom:borderRadius="15dp"
+     custom:outerCircleRadius="105dp"
+     custom:text="Test Test"
+     custom:textColor="#ffffff"
+     custom:textSize="16sp"
+     custom:numerator="75"
+     custom:innerCircleColor="#000000"
+     */
 }
