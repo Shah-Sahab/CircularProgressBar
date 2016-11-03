@@ -65,7 +65,7 @@ public class LimitIndicator extends ViewGroup {
     // ----------------------------------------------------------------------------------------------------------
     // Variables Declaration
 
-    public static String TAG = "LimitIndicator";
+    private static final String TAG = "LimitIndicator";
 
     private int     mInnerCircleColor;
     private int     mBorderColor;
@@ -187,7 +187,7 @@ public class LimitIndicator extends ViewGroup {
     @Override
     protected void onDraw(Canvas pCanvas) {
         super.onDraw(pCanvas);
-        Log.d("LimitIndicator", "OnDraw called");
+        Log.d(TAG, "OnDraw called");
 
         if (mReset) {
             // Clear the canvas & reset the flag
