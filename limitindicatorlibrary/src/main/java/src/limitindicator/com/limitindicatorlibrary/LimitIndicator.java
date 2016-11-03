@@ -32,10 +32,12 @@ import android.graphics.Paint.Align;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.support.v4.view.accessibility.AccessibilityManagerCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 
 /**
  * Limit Indicator is used to show any kind of limits such as Balance and Actual
@@ -227,6 +229,15 @@ public class LimitIndicator extends ViewGroup {
         if (mCounter <= mTotalProgress) {
             mTitleText = mCounter + " %";
             pCanvas.drawText(mTitleText, mCenterX + 15, mCenterY + 15, mTextPaint);
+        } else {
+            /*
+             * ACCESSIBILITY :
+             * Sending an accessibility event
+             */
+            AccessibilityManager accessibilityManager = (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+            if (accessibilityManager.isEnabled()) {
+                sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED);
+            }
         }
     }
 
@@ -354,7 +365,9 @@ public class LimitIndicator extends ViewGroup {
     @Override
     public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent pEvent) {
 
-        return super.dispatchPopulateAccessibilityEvent(pEvent);
+        pEvent.getText().add(mCounter + " % out of 100 percent.");
+        return true;
+//        return super.dispatchPopulateAccessibilityEvent(pEvent);
     }
 
 
